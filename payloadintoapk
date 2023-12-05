@@ -58,6 +58,11 @@ search for landroid/os/Bundle or oncreate function
 Now open manfeation file of payload and copy require permissions and paste them in the menifestation file of downloadedapk and then recompile the downloadedapk
 cmd > apktool b /originalfolder 
   ====> b == build
-      
+
+
+===>now in originalfolder there will be a dist file (you can find apk there)
+cmd > cd originalfolder
+cmd > cd dist
+cmd > ls
 
  
